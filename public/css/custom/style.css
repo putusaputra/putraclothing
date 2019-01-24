@@ -107,5 +107,59 @@ body {
 body {
   padding-top: 0px;
 }
+
+.row--nomargin {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.title {
+  text-align: center;
+  padding: 20px;
+}
+
+.item {
+  float: left;
+  margin: 5% 20px 5% 20px;
+}
+
+.item__img__wrapper {
+  margin-bottom: 15px;
+}
+
+.item__img {
+  max-width: 100%;
+}
+
+.item__desc {
+  float: left;
+  width: 40%;
+}
+
+.item__desc--qtyadjusted, .item__colon--qtyadjusted {
+  padding: 5px 0px 5px 0px;
+}
+
+.item__colon {
+  float: left;
+  width: 4%;
+}
+
+.item__value {
+  float: left;
+  width: 56%;
+}
+
+.item__submit {
+  display: none;
+}
+
+.item__cart {
+  text-align: center;
+}
+
+.item__cart__a {
+  margin: 15px 5% 15px 5%;
+}
 /* END CUSTOM CSS */
   
