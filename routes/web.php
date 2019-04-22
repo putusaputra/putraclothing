@@ -14,3 +14,13 @@
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/shop', 'ShopsController@index');
+Route::get('/admin', 'AdminController@index');
+
+Route::resource('items', 'ItemsController');
+Auth::routes();
+
+Route::group(['middleware' => 'auth'], function(){
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/admin', 'HomeController@admin');
+});
+
