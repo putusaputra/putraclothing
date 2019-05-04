@@ -14,7 +14,7 @@
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/shop', 'ShopsController@index');
-Route::get('/admin', 'AdminController@index');
+//Route::get('/admin', 'AdminController@index');
 
 Route::resource('items', 'ItemsController');
 Auth::routes();
@@ -22,5 +22,8 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/admin', 'HomeController@admin');
+    Route::resource('items', 'ItemsController');
+    Route::get('/searchItems', 'ItemsController@searchItemByName');
+    Route::get('/searchProducts', 'ShopsController@searchProductsByNameOrCategory');
 });
 

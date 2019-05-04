@@ -12,6 +12,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom/style.css') }}" rel="stylesheet">    
+    <link href="{{ asset('css/magnific-popup.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -26,8 +27,8 @@
             <div class="sidebar col-lg-3 col-md-3 col-xs-12">
                 <div class="sidebar__title">Menu</div>
                 <ul>
-                    <li>Create Item</li>
-                    <li>Show all items</li>
+                    <li><a href = "/items/create">Create Item</a></li>
+                    <li><a href = "/items">Show all items</a></li>
                     <li>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">Log Out</a>
@@ -49,4 +50,28 @@
     <!-- Scripts -->
     <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.item__link--popup').magnificPopup({type:'image'});
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#img-create').attr('src', e.target.result);
+                        $('#a-create').attr('href', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $('#item_preview').change(function(){
+                $('.item__link--switch').css('display','block');
+                readURL(this);
+            });
+        });
+    </script>
 </body>

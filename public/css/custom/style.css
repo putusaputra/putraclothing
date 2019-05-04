@@ -121,6 +121,7 @@ body {
 .item {
   float: left;
   margin: 5% 20px 5% 20px;
+  max-width: 40%;
 }
 
 .item__img__wrapper {
@@ -160,6 +161,32 @@ body {
 
 .item__cart__a {
   margin: 15px 5% 15px 5%;
+}
+
+.item__image--popup {
+  max-width: 70px;
+  height: auto;
+}
+
+.item__link--switch {
+  display: none;
+}
+
+.paging {
+  float: left;
+}
+
+.checkout-link {
+  display: inline-block;
+}
+
+.nav-link-checkout {
+  display: inline-block;
+}
+
+.checkout-icon {
+  max-width: 30px;
+  height: auto;
 }
 /* END CUSTOM CSS */
   

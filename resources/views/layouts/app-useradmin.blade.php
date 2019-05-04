@@ -26,7 +26,7 @@
             <div class="sidebar col-lg-3 col-md-3 col-xs-12">
                 <div class="sidebar__title">Menu</div>
                 <ul>
-                    <li>Create Orders</li>
+                    <li><a href = "/shop">Create Orders</a></li>
                     <li>Show all orders</li>
                     <li>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();
