@@ -188,5 +188,11 @@ body {
   max-width: 30px;
   height: auto;
 }
+
+.item__img--minified {
+  width: auto;
+  max-height: 100px;
+  max-width: 100%;
+}
 /* END CUSTOM CSS */
   

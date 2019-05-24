@@ -25,7 +25,7 @@
         @if (count($items) > 0)
         @foreach ($items as $item)
 
-            <div class="item col-lg-4 card card-body bg-light" alt="{{ $item->item_alt }}" title="{{ $item->item_title }}">
+            <div class="item col-lg-4 card card-body bg-light" alt="{{ $item->item_alt }}" title="{{ $item->item_title }}" imgpreview = "{{ $item->item_preview }}">
                 <div class="item__img__wrapper col-lg-12">
                     <a class = "item__link--popup" href = "/storage/t-shirts/{{ $item->item_preview }}">
                         <img class="item__img" src="/storage/t-shirts/{{ $item->item_preview }}" />

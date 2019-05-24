@@ -49,4 +49,20 @@
     <!-- Scripts -->
     <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+    <script type = "text/javascript">
+        function getLocalStorageCurrentValue() {
+            var count = JSON.parse(localStorage.getItem('items'));
+            var itemsCount = count != 'undefined' && count != null ? count.items.length : 0;
+
+            if (itemsCount > 0) {
+                $('.nav-item .checkout-link #checkout-count').text(itemsCount);
+            } else {
+                $('.nav-item .checkout-link #checkout-count').text('');
+            }
+        }
+
+        $(document).ready(function(){
+            getLocalStorageCurrentValue();
+        });
+    </script>
 </body>

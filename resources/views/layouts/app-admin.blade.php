@@ -52,22 +52,33 @@
     <script type="text/javascript" src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
-            $('.item__link--popup').magnificPopup({type:'image'});
+        function getLocalStorageCurrentValue() {
+            var count = JSON.parse(localStorage.getItem('items'));
+            var itemsCount = count != 'undefined' && count != null ? count.items.length : 0;
 
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        $('#img-create').attr('src', e.target.result);
-                        $('#a-create').attr('href', e.target.result);
-                    }
-
-                    reader.readAsDataURL(input.files[0]);
-                }
+            if (itemsCount > 0) {
+                $('.nav-item .checkout-link #checkout-count').text(itemsCount);
+            } else {
+                $('.nav-item .checkout-link #checkout-count').text('');
             }
+        }
 
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-create').attr('src', e.target.result);
+                    $('#a-create').attr('href', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $(document).ready(function(){
+            getLocalStorageCurrentValue();
+            $('.item__link--popup').magnificPopup({type:'image'});
             $('#item_preview').change(function(){
                 $('.item__link--switch').css('display','block');
                 readURL(this);

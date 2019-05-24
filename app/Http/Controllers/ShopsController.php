@@ -29,4 +29,21 @@ class ShopsController extends Controller
 
         return view('shops.index')->with('items', $items);
     }
+
+    public function checkout() {
+        return view('shops.checkout');
+    }
+
+    public function checkoutContent(Request $request) {
+        $initItems = $request->all();
+        $items = json_decode($initItems['items'], true);
+        //json_decode($initItems['items'])['items']->
+        return view('shops.checkout-content')->with('items', $items)->render();
+        //echo $initItems['items'];
+        //echo $items->items[0]->itemName;
+        //echo $items->items[0];
+        /*foreach ($items->items[0] as $item) {
+            echo $item->itemName;
+        }*/
+    }
 }

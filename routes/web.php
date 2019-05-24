@@ -25,5 +25,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::resource('items', 'ItemsController');
     Route::get('/searchItems', 'ItemsController@searchItemByName');
     Route::get('/searchProducts', 'ShopsController@searchProductsByNameOrCategory');
+    Route::get('/checkout', 'ShopsController@checkout');
+    Route::post('/checkout-content', 'ShopsController@checkoutContent');
 });
 

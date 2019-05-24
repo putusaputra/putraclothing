@@ -19,9 +19,9 @@
             </li>
           </ul>
           <div class="nav-item float-lg-right">
-            <a class = "checkout-link" href = "/checkout">
+            <a class = "checkout-link" href = "/checkout" title = "Checkout here !">
               <img class = "checkout-icon" src = "{{ asset('icons/cart.svg') }}"/>
-              <span class = "badge badge-secondary">New</span>
+              <span id = "checkout-count" class = "badge badge-secondary">New</span>
             </a>
             <a class="nav-link nav-link-checkout" href="/admin">Admin Page</a>
           </div>
