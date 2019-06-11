@@ -16,7 +16,6 @@
 <body>
     <div id="app">
         @include('inc.navbar2')
-        {{--@include('inc.navbar')--}}
         @include('inc.messages')
         
         <div class="row row--nomargin">
@@ -27,7 +26,7 @@
                 <div class="sidebar__title">Menu</div>
                 <ul>
                     <li><a href = "/shop">Create Orders</a></li>
-                    <li>Show all orders</li>
+                    <li><a href = "/orders">Show all orders</a></li>
                     <li>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">Log Out</a>
@@ -47,8 +46,8 @@
     </div>
 
     <!-- Scripts -->
-    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     <script type = "text/javascript">
         function getLocalStorageCurrentValue() {
             var count = JSON.parse(localStorage.getItem('items'));

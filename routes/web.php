@@ -13,8 +13,7 @@
 
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
-Route::get('/shop', 'ShopsController@index');
-//Route::get('/admin', 'AdminController@index');
+Route::get('/shop', 'ShopsController@index')->name('shop.index');
 
 Route::resource('items', 'ItemsController');
 Auth::routes();
@@ -27,5 +26,16 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/searchProducts', 'ShopsController@searchProductsByNameOrCategory');
     Route::get('/checkout', 'ShopsController@checkout');
     Route::post('/checkout-content', 'ShopsController@checkoutContent');
+    Route::resource('orders', 'OrdersController');
+    Route::get('/searchOrders', 'OrdersController@searchOrderByName');
+    Route::post('/orderdetails', 'OrdersController@getOrderDetails')->name('orderdetails.index');
+    //Midtrans routes
+    Route::post('/checkout/finish', 'ShopsController@checkoutFinish')->name('checkout.finish');
+    /*Route::post('/finish', function(){
+        return redirect()->route('welcome');
+    })->name('checkout.finish');*/
+
+    Route::post('/checkout/store', 'ShopsController@submitOrder')->name('checkout.store');
+    Route::post('/notification/handler', 'ShopsController@notificationHandler')->name('notification.handler');
 });
 

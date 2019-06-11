@@ -15,11 +15,12 @@
         </thead>
         <tbody>
 
-@if (count($items) > 0)
+@if ($items !== null && count($items) > 0)
 
     @php
         $total = 0;
         $grandTotal = 0;
+        $item_details = array();
     @endphp
 
         @foreach ($items['items'] as $item)
@@ -43,6 +44,12 @@
             @php
                 $total = $item['itemQty'] * $item['itemPrice'];
                 $grandTotal = $grandTotal + $total;
+                array_push($item_details, array(
+                    'id'        => $item['itemCode'],
+                    'price'     => $item['itemPrice'],
+                    'quantity'  => $item['itemQty'],
+                    'name'      => $item['itemName']
+                ));
             @endphp
 
         @endforeach
@@ -51,7 +58,7 @@
                 <td class = "text-right" colspan = "7">Grand Total</td>
                 <td>{{ number_format($grandTotal, 0, ",", ".") }}</td>
                 <td>
-                    <a class = "btn btn-block btn-primary btn-lg" href = "javascript:void(0);">Checkout</a>
+                    <a class = "btn btn-block btn-primary btn-lg" href = "javascript:void(0);" data-toggle="modal" data-target="#checkoutModal" data-grossamount = "@php echo $grandTotal; @endphp" data-itemdetails = '@php echo json_encode($item_details); @endphp' id = "checkout-transfer">Checkout</a>
                 </td>
             </tr>
 
@@ -60,5 +67,7 @@
 </div>
 
 @else
-    <h1>No Data</h1>
+    <tr>
+        <td colspan = "9" style = "text-align: center;">No Data</td>
+    </tr>
 @endif

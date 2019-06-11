@@ -17,7 +17,6 @@
 <body>
     <div id="app">
         @include('inc.navbar2')
-        {{--@include('inc.navbar')--}}
         @include('inc.messages')
         
         <div class="row row--nomargin">
@@ -29,6 +28,7 @@
                 <ul>
                     <li><a href = "/items/create">Create Item</a></li>
                     <li><a href = "/items">Show all items</a></li>
+                    <li><a href = "/orders">Show all orders</a></li>
                     <li>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">Log Out</a>
@@ -45,11 +45,12 @@
         </div>
        
         @include('inc.footer')
+        @include('inc.order-modal')
     </div>
 
     <!-- Scripts -->
-    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
     <script type="text/javascript">
         function getLocalStorageCurrentValue() {
@@ -76,12 +77,74 @@
             }
         }
 
+        // admin orders page
+        function getOrderDetails(ev) {
+            var rt = $(ev.relatedTarget);
+            var order_id = rt.data('order-id');
+            var status = rt.data('status');
+            
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: "{{ route('orderdetails.index') }}",
+                type: 'POST',
+                data: {order_id: order_id},
+                success: function(data) {
+                    $('#orderModalWrapper').html(data);
+                    $("select#orderStatus option[value='"+ status +"']").prop('selected', true);
+                },
+                error: function(xhr) {
+                    console.log(xhr.status + "-" + xhr.statusText);
+                }
+            });
+        }
+
+        function updateOrderStatus(el) {
+            var elModalBody = $(el).closest('.modal-content').find('.modal-body');
+            var order_id = elModalBody.find('#orderModalWrapper').find('table tbody').find('tr td:nth-child(1)').text();
+            var status = elModalBody.find('select#orderStatus option:selected').val();
+            
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: '/orders/'+ order_id,
+                type: 'PUT',
+                data: {status:status},
+                success: function(data) {
+                    if (data == "true") {
+                        alert('Status of Order ID : ' + order_id + " is successfully updated to " + status);
+                        location.reload();
+                    } else {
+                        alert('Status of Order ID : ' + order_id + " is fail to updated to " + status);
+                    }
+                    
+                },
+                error: function(xhr) {
+                    console.log(xhr.status + "-" + xhr.statusText);
+                }
+            });
+        }
+
         $(document).ready(function(){
             getLocalStorageCurrentValue();
             $('.item__link--popup').magnificPopup({type:'image'});
             $('#item_preview').change(function(){
                 $('.item__link--switch').css('display','block');
                 readURL(this);
+            });
+
+            $(document).on('show.bs.modal', '#orderModal', function(e) {
+                $('#orderModalWrapper').html('');
+                $('#formOrderModal').trigger('reset');
+                getOrderDetails(e);
             });
         });
     </script>

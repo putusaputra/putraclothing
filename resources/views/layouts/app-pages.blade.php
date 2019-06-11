@@ -16,7 +16,6 @@
 <body>
     <div id="app">
         @include('inc.navbar2')
-        {{--@include('inc.navbar')--}}
         <div class="container">
             @include('inc.messages')
             @yield('content')
@@ -26,8 +25,8 @@
     </div>
 
     <!-- Scripts -->
-    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     <script type = "text/javascript">
         function getLocalStorageCurrentValue() {
             var count = JSON.parse(localStorage.getItem('items'));
