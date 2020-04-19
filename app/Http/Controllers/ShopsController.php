@@ -126,7 +126,8 @@ class ShopsController extends Controller
         $order->user_id = $customer_id;
         $order->shipping_address = $address;
         $order->grandtotal = $gross_amount;
-        $order->status = 'pending';
+        $order->payment_status = 'pending';
+        $order->order_status = 'pending';
         $order->snap_token = $snapToken;
         $order->save();
         //tabel OrderDetails
@@ -156,6 +157,7 @@ class ShopsController extends Controller
     public function notificationHandler(Request $request) {
         $notif = new Veritrans_Notification();
 
+        $success = false;
         $transaction = $notif->transaction_status;
         $type = $notif->payment_type;
         $order_id = $notif->order_id;
@@ -165,48 +167,6 @@ class ShopsController extends Controller
             if ($type == 'credit_card') {
                 if ($fraud == 'challenge') {
                     $order->setPending();
-                } else {
-                    $order->setSuccess();
-                }
-            }
-        } elseif ($transaction == 'settlement') {
-            $order->setSuccess();
-        } elseif ($transaction == 'pending') {
-            $order->setPending();
-        } elseif ($transaction == 'deny') {
-            $order->setFailed();
-        } elseif ($transaction == 'expire') {
-            $order->setExpired();
-        } elseif ($transaction == 'cancel') {
-            $order->setFailed();
-        }
-
-        //retrieve transaction status that has occured
-        /*$order_status_obj = Veritrans_Transaction::status($order_id);
-        $status = $order_status_obj->transaction_status;
-
-        return $status;*/
-    }
-
-    /**
-     * Midtrans ajax notification handler.
-     *
-     * @param Request $request
-     *
-     * @return void
-     */
-    public function ajaxNotificationHandler(Request $request) {
-        $success = false;
-        $transaction = $request->transaction_status;
-        $type = $request->payment_type;
-        $order_id = $request->order_id;
-        $fraud = $request->fraud_status;
-        $order = Order::findOrFail($order_id);
-        if ($transaction == 'capture') {
-            if ($type == 'credit_card') {
-                if ($fraud == 'challenge') {
-                    $order->setPending();
-                    $success = false;
                 } else {
                     $order->setSuccess();
                     $success = true;
@@ -225,7 +185,16 @@ class ShopsController extends Controller
             $order->setFailed();
         }
 
-        return response()->json($success);
+        if ($success) {
+            $order->reference_no = $notif->transaction_id;
+            $order->save();
+        }
+
+        //retrieve transaction status that has occured
+        /*$order_status_obj = Veritrans_Transaction::status($order_id);
+        $status = $order_status_obj->transaction_status;
+
+        return $status;*/
     }
 
     public function checkoutFinish() {

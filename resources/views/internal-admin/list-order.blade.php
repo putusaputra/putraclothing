@@ -26,7 +26,9 @@
                                 <th>User Name</th>
                                 <th>Shipping Address</th>
                                 <th>Grandtotal</th>
-                                <th>Status</th>
+                                <th>Payment Status</th>
+                                <th>Order Status</th>
+                                <th>Reference No</th>
                                 <th>Snap Token</th>
                                 @if (Auth::user()->isAdmin == 1)
                                     <th>Action</th>
@@ -42,12 +44,14 @@
                                 <td>{{ $order->user->name }}</td>
                                 <td>{{ $order->shipping_address }}</td>
                                 <td>{{ $order->grandtotal }}</td>
-                                <td>{{ $order->status }}</td>
+                                <td>{{ $order->payment_status }}</td>
+                                <td>{{ $order->order_status }}</td>
+                                <td>{{ $order->reference_no }}</td>
                                 <td>{{ $order->snap_token }}</td>
 
                                 @if (Auth::user()->isAdmin == 1)
                                     <td>
-                                        <a class="btn btn-success" href="javascript:void(0);" data-toggle = "modal" data-target = "#orderModal" id = "show-order-detail" title = "show order details" data-order-id = "{{ $order->order_id }}" data-status = "{{ $order->status }}">
+                                        <a class="btn btn-success" href="javascript:void(0);" data-toggle = "modal" data-target = "#orderModal" id = "show-order-detail" title = "show order details" data-order-id = "{{ $order->order_id }}" data-status = "{{ $order->order_status }}">
                                             <img src="{{ asset('icons/pencil.svg') }}"/>
                                         </a>
                                     </td>

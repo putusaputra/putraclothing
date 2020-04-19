@@ -180,22 +180,8 @@
                         onSuccess: function (result) {
                             console.log('success');
                             console.log(result);
-                            $.ajax({
-                                url: "{{ route('notification.handler.ajax') }}",
-                                type: "POST",
-                                data: result,
-                                success: function(result) {
-                                    if (result) {
-                                        localStorage.clear();
-                                        window.location.href = "{{ route('checkout.finish') }}";
-                                    } else {
-                                        window.location.href = "{{ route('checkout.failed') }}";
-                                    }
-                                },
-                                error: function(xhr) {
-                                    console.log(xhr.status + "-" + xhr.statusText);
-                                }
-                            });
+                            localStorage.clear();
+                            window.location.href = "{{ route('checkout.finish') }}";
                         },
                         onPending: function (result) {
                             console.log('pending');

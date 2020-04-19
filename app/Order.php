@@ -12,42 +12,42 @@ class Order extends Model
     public $incrementing = false;
     protected $keyType = "string";
     /**
-     * Set status to Pending
+     * Set payment_status to Pending
      *
      * @return void
      */
     public function setPending() {
-        $this->attributes['status'] = 'pending';
+        $this->attributes['payment_status'] = 'pending';
         self::save();
     }
 
     /**
-     * Set status to Success
+     * Set payment_status to Success
      *
      * @return void
      */
     public function setSuccess() {
-        $this->attributes['status'] = 'success';
+        $this->attributes['payment_status'] = 'success';
         self::save();
     }
 
     /**
-     * Set status to Failed
+     * Set payment_status to Failed
      *
      * @return void
     */
     public function setFailed() {
-        $this->attributes['status'] = 'failed';
+        $this->attributes['payment_status'] = 'failed';
         self::save();
     }
 
     /**
-    * Set status to Expired
+    * Set payment_status to Expired
     *
     * @return void
     */
     public function setExpired() {
-        $this->attributes['status'] = 'expired';
+        $this->attributes['payment_status'] = 'expired';
         self::save();
     }
 

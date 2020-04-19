@@ -18,7 +18,9 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('shipping_address');
             $table->decimal('grandtotal', 10, 0);
-            $table->string('status')->default('pending');
+            $table->string('payment_status')->default('pending');
+            $table->string('order_status')->default('pending');
+            $table->string('reference_no')->nullable();
             $table->string('snap_token')->nullable();
             $table->timestamps();
 

@@ -33,7 +33,8 @@ class OrdersController extends Controller
                 ->where('orders.order_id', 'like', '%' . $keywords . '%')
                 ->orWhere('users.name', 'like', '%' . $keywords . '%')
                 ->orWhere('orders.shipping_address', 'like', '%' . $keywords . '%')
-                ->orWhere('orders.status', 'like', '%' . $keywords . '%')
+                ->orWhere('orders.payment_status', 'like', '%' . $keywords . '%')
+                ->orWhere('orders.order_status', 'like', '%' . $keywords . '%')
                 ->paginate(10);
         $orders->appends(['search_order' => $keywords]);
         
@@ -109,7 +110,7 @@ class OrdersController extends Controller
     {
         $status = $request->input('status');
         $order = Order::find($id);
-        $order->status = $status;
+        $order->order_status = $status;
         if ($order->save()) {
             return "true";
         } else {

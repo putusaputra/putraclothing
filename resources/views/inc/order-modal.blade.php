@@ -11,12 +11,12 @@
         <div id = "orderModalWrapper"></div>
         <form id = "formOrderModal" action = "" method = "post">
           <div class="form-group">
-            <label for="orderStatus" class="col-form-label">Status:</label>
+            <label for="orderStatus" class="col-form-label">Order Status:</label>
             <select class="form-control" id="orderStatus" required>
                 <option value = 'pending'>Pending</option>
-                <option value = 'success'>Success</option>
-                <option value = 'failed'>Failed</option>
-                <option value = 'expired'>Expired</option>
+                <option value = 'processing'>Processing</option>
+                <option value = 'complete'>Complete</option>
+                <option value = 'cancelled'>Cancelled</option>
             </select>
           </div>
         </form>

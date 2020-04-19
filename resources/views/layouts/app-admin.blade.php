@@ -105,7 +105,7 @@
 
         function updateOrderStatus(el) {
             var elModalBody = $(el).closest('.modal-content').find('.modal-body');
-            var order_id = elModalBody.find('#orderModalWrapper').find('table tbody').find('tr td:nth-child(1)').text();
+            var order_id = elModalBody.find('#orderModalWrapper').find('table tbody').find('tr:nth-child(1) td:nth-child(1)').text();
             var status = elModalBody.find('select#orderStatus option:selected').val();
             
             $.ajaxSetup({
@@ -120,10 +120,10 @@
                 data: {status:status},
                 success: function(data) {
                     if (data == "true") {
-                        alert('Status of Order ID : ' + order_id + " is successfully updated to " + status);
+                        alert('Order Status of Order ID : ' + order_id + " is successfully updated to " + status);
                         location.reload();
                     } else {
-                        alert('Status of Order ID : ' + order_id + " is fail to updated to " + status);
+                        alert('Order Status of Order ID : ' + order_id + " is fail to updated to " + status);
                     }
                     
                 },
