@@ -3,7 +3,7 @@
 @section('content')
     <div class="row row--nomargin">
         <div class="title col-lg-12">
-            <h1>Checkout Success! Thank you</h1>
+            <h1>Checkout Failed!</h1>
         </div>
         <div id = "checkout-finish-content-wrapper" class="col-lg-12">
             <a href = "{{ route('shop.index') }}" class = "btn btn-success">Back to Shop</a>

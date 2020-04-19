@@ -36,11 +36,10 @@
                         <tbody>
 
                     @if (count($orders) > 0)
-                                
                         @foreach ($orders as $order)
                             <tr>
                                 <td>{{ $order->order_id }}</td>
-                                <td>{{ $order->user_name }}</td>
+                                <td>{{ $order->user->name }}</td>
                                 <td>{{ $order->shipping_address }}</td>
                                 <td>{{ $order->grandtotal }}</td>
                                 <td>{{ $order->status }}</td>

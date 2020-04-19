@@ -30,12 +30,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/searchOrders', 'OrdersController@searchOrderByName');
     Route::post('/orderdetails', 'OrdersController@getOrderDetails')->name('orderdetails.index');
     //Midtrans routes
-    Route::post('/checkout/finish', 'ShopsController@checkoutFinish')->name('checkout.finish');
-    /*Route::post('/finish', function(){
-        return redirect()->route('welcome');
-    })->name('checkout.finish');*/
-
+    Route::get('/checkout/finish', 'ShopsController@checkoutFinish')->name('checkout.finish');
+    Route::get('/checkout/failed', 'ShopsController@checkoutFailed')->name('checkout.failed');
     Route::post('/checkout/store', 'ShopsController@submitOrder')->name('checkout.store');
     Route::post('/notification/handler', 'ShopsController@notificationHandler')->name('notification.handler');
+    Route::post('/notification/handler/ajax', 'ShopsController@ajaxNotificationHandler')->name('notification.handler.ajax');
 });
 

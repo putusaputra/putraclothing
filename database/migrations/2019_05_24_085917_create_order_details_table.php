@@ -19,6 +19,7 @@ class CreateOrderDetailsTable extends Migration
             $table->integer('qty');
             $table->decimal('price', 10, 0);
             $table->decimal('total', 10, 0);
+            $table->timestamps();
 
             $table->foreign('item_code')->references('item_code')->on('items');
         });

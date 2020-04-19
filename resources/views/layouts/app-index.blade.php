@@ -55,31 +55,48 @@
                 var itemSize = $(elem).closest('.item__cart').closest('.item').children('.item__info').children('.item__size').children('.item__value').text();
                 var itemPrice = $(elem).closest('.item__cart').closest('.item').children('.item__info').children('.item__price').children('.item__value').text();
                 var itemQty = $(elem).closest('.item__cart').closest('.item').children('.item__info').children('.item__qty').children('.item__value').find('input[name="item_qty"]').val();
+                var itemUpdate = false;
 
                 if (itemQty == 'undefined' || itemQty == null || itemQty == 0 || isNaN(itemQty)) {
                     alert('please add qty!')
                     return;
                 }
 
-                var content = {};
-                content['itemPreview'] = itemPreview;
-                content['itemCode'] = itemCode;
-                content['itemCategory'] = itemCategory;
-                content['itemName'] = itemName;
-                content['itemMaterial'] = itemMaterial;
-                content['itemSize'] = itemSize;
-                content['itemPrice'] = itemPrice;
-                content['itemQty'] = itemQty;
+                for (var i = 0; i < localStorageCount; i++) {
+                    if (itemCode === ls.items[i].itemCode) {
+                        itemUpdate = true;
+                        ls.items[i].itemQty = parseInt(ls.items[i].itemQty, 10) + parseInt(itemQty, 10);
+                    }
+                }
+
+                if (itemUpdate === false) {
+                    var content = {};
+                    content['itemPreview'] = itemPreview;
+                    content['itemCode'] = itemCode;
+                    content['itemCategory'] = itemCategory;
+                    content['itemName'] = itemName;
+                    content['itemMaterial'] = itemMaterial;
+                    content['itemSize'] = itemSize;
+                    content['itemPrice'] = itemPrice;
+                    content['itemQty'] = itemQty;
+
+                    if (localStorageCount > 0) {
+                        data = null;
+                        data = ls;
+                    }
+                    data['items'].push(content);
+                }
 
                 if (localStorageCount > 0) {
                     data = null;
                     data = ls;
                 }
-                data['items'].push(content);
                 
                 localStorage.setItem('items', JSON.stringify(data));
                 var count = JSON.parse(localStorage.getItem('items'));
                 var itemsCount = count.items.length;
+
+                itemUpdate = false;
 
                 $('.nav-item .checkout-link #checkout-count').text(itemsCount);
 
@@ -159,8 +176,38 @@
                 type: 'POST',
                 data: {gross_amount:gross_amount, item_details:item_details, address:address, city:city, phone:phone},
                 success: function(result) {
-                    console.log(result);
-                    snap.pay(result.snap_token);
+                    snap.pay(result.snap_token, {
+                        onSuccess: function (result) {
+                            console.log('success');
+                            console.log(result);
+                            $.ajax({
+                                url: "{{ route('notification.handler.ajax') }}",
+                                type: "POST",
+                                data: result,
+                                success: function(result) {
+                                    if (result) {
+                                        localStorage.clear();
+                                        window.location.href = "{{ route('checkout.finish') }}";
+                                    } else {
+                                        window.location.href = "{{ route('checkout.failed') }}";
+                                    }
+                                },
+                                error: function(xhr) {
+                                    console.log(xhr.status + "-" + xhr.statusText);
+                                }
+                            });
+                        },
+                        onPending: function (result) {
+                            console.log('pending');
+                            console.log(result);
+                            window.location.href = "{{ route('checkout.failed') }}";
+                        },
+                        onError: function (result) {
+                            console.log('error');
+                            console.log(result);
+                            window.location.href = "{{ route('checkout.failed') }}";
+                        }
+                    });
                 },
                 error: function(xhr) {
                     alert('error: ' + xhr.status + "-" + xhr.statusText);

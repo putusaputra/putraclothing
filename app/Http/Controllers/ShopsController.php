@@ -113,7 +113,7 @@ class ShopsController extends Controller
                 'phone'             => $phone,
                 'shipping_address'   => $shipping_address
             ],
-            'item_details' => [$item_details]
+            'item_details' => $item_details
         ];
 
         $snapToken = Veritrans_Snap::getSnapToken($payload);
@@ -127,13 +127,13 @@ class ShopsController extends Controller
         $order->shipping_address = $address;
         $order->grandtotal = $gross_amount;
         $order->status = 'pending';
-        $order->snap_token = $snap_token;
+        $order->snap_token = $snapToken;
         $order->save();
         //tabel OrderDetails
         $total = 0;
         foreach ($item_details as $value) {
             $total = $value['quantity'] * $value['price'];
-            $orderDet = new OrderDetails;
+            $orderDet = new OrderDetail;
             $orderDet->order_id = $order_id;
             $orderDet->item_code = $value['id'];
             $orderDet->qty = $value['quantity'];
@@ -188,8 +188,52 @@ class ShopsController extends Controller
         return $status;*/
     }
 
+    /**
+     * Midtrans ajax notification handler.
+     *
+     * @param Request $request
+     *
+     * @return void
+     */
+    public function ajaxNotificationHandler(Request $request) {
+        $success = false;
+        $transaction = $request->transaction_status;
+        $type = $request->payment_type;
+        $order_id = $request->order_id;
+        $fraud = $request->fraud_status;
+        $order = Order::findOrFail($order_id);
+        if ($transaction == 'capture') {
+            if ($type == 'credit_card') {
+                if ($fraud == 'challenge') {
+                    $order->setPending();
+                    $success = false;
+                } else {
+                    $order->setSuccess();
+                    $success = true;
+                }
+            }
+        } elseif ($transaction == 'settlement') {
+            $order->setSuccess();
+            $success = true;
+        } elseif ($transaction == 'pending') {
+            $order->setPending();
+        } elseif ($transaction == 'deny') {
+            $order->setFailed();
+        } elseif ($transaction == 'expire') {
+            $order->setExpired();
+        } elseif ($transaction == 'cancel') {
+            $order->setFailed();
+        }
+
+        return response()->json($success);
+    }
+
     public function checkoutFinish() {
         return view('shops.checkout-finish');
+    }
+
+    public function checkoutFailed() {
+        return view('shops.checkout-failed');
     }
 
     public function generateOrderId() {
